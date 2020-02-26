@@ -1,0 +1,11 @@
+[initialize]
+raspberrypi.lan
+[initialize:vars]
+ansible_connection=ssh
+ansible_user=pi
+ansible_ssh_pass=raspberry
+
+[rbp]
+raspberrypi.lan
+[rbp:vars]
+ansible_user=thspinto

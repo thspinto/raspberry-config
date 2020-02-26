@@ -1,0 +1,54 @@
+# This playbook configure ssh access
+---
+- hosts: "initialize"
+  become: yes
+  become_method: sudo
+  vars:
+    hostname: raspberrypi
+    users:
+    -  "thspinto"
+
+  tasks:
+  - name: "Create user accounts"
+    user:
+      name: "{{ item }}"
+      groups: "pi,adm,dialout,cdrom,sudo,audio,video,plugdev,games,users,input,netdev,gpio,i2c,spi"
+    with_items: "{{ users }}"
+
+  - name: "Add authorized keys"
+    authorized_key:
+      user: "{{ item }}"
+      key: "https://github.com/{{ item }}.keys"
+    with_items: "{{ users }}"
+
+  - name: "Allow sudo group without a password"
+    lineinfile:
+      dest: "/etc/sudoers"
+      state: "present"
+      regexp: "^%sudo"
+      line: "%sudo ALL=(ALL) NOPASSWD: ALL"
+      validate: 'visudo -cf %s'
+
+# Network
+  - name: "Configure hostname"
+    hostname:
+      name: "{{ hostname }}"
+
+# Security
+  - name: "Disable root login over SSH"
+    lineinfile:
+      dest: /etc/ssh/sshd_config
+      regexp: "^PermitRootLogin"
+      line: "PermitRootLogin no"
+      state: present
+
+  - name: "Disable password login"
+    lineinfile:
+      dest: /etc/ssh/sshd_config
+      regexp: "^PasswordAuthentication"
+      line: "PasswordAuthentication no"
+      state: present
+
+
+  - name: "Reboot"
+    reboot:
