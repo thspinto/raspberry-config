@@ -17,13 +17,14 @@ touch /Volumes/boot/ssh # to enable ssh
 
 2. Run the initialize ansible playbook
 
-```
+```bash
 ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook initialize.yaml -i inventories/thspinto
 ```
 
 3. Run the setup playbook
 
-```
+```bash
+ansible-galaxy install -r requirements.yml
 ansible-playbook setup.yaml -i inventories/thspinto
 ```
 

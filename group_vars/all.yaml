@@ -1,3 +1,6 @@
+# Python2 shouldn't be used anymore
+ansible_python_interpreter: "/usr/bin/python3"
+
 ###
 ### Docker
 ###
@@ -10,3 +13,8 @@ docker_home: /mnt/storage/docker
 # Docker storage driver, see https://docs.docker.com/storage/storagedriver/select-storage-driver/#supported-backing-filesystems
 # You might want to change this to ZFS, depending on your underlying filesystem.
 docker_storage_driver: overlay2
+
+docker_pip_executable: pip3
+
+docker_users:
+  - "{{ user }}"

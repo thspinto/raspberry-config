@@ -2,12 +2,11 @@
 - name: "Install and configure unattended"
   block:
   - apt:
-      pkg: "{{ item }}"
+      pkg:
+        - unattended-upgrades
+        - apt-listchanges
+        - mailutils
       state: present
-    with_items:
-      - unattended-upgrades
-      - apt-listchanges
-      - mailutils
 
   - template:
       src: "unattended/{{ item }}.j2"
@@ -36,7 +35,7 @@
     - regexp: "(\/\/)? ?Unattended-Upgrade::Automatic-Reboot-Time \""
       line: Unattended-Upgrade::Automatic-Reboot-Time "02:00";
     - regexp: "(\/\/)? ?Unattended-Upgrade::Mail \""
-      line: Unattended-Upgrade::Mail "{{ admin_email }}";
+      line: Unattended-Upgrade::Mail "{{ email }}";
     - regexp: "(\/\/)? ?Unattended-Upgrade::MailOnlyOnError \""
       line: Unattended-Upgrade::MailOnlyOnError "false";
     - regexp: "(\/\/)? ?Unattended-Upgrade::Remove-Unused-Dependencies \""
