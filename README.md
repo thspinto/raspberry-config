@@ -30,4 +30,5 @@ ansible-playbook setup.yaml -i inventories/thspinto
 ## References
 
 [Chester's ansible configs](https://github.com/chesterbr/chester-ansible-configs)
+
 [Ansible NAS configuration](https://github.com/davestephens/ansible-nas)

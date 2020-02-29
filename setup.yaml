@@ -33,7 +33,7 @@
   - import_tasks: tasks/fail2ban.yaml
     tags: fail2ban
 
-  - import_tasks: tasks/unattended.yamlmounted
+  - import_tasks: tasks/unattended.yaml
 
     tags: unattended
 
