@@ -9,14 +9,22 @@ Download the latest version from [here](https://www.raspberrypi.org/downloads/ra
 1. unmount the SD card, than copy the image to the card.
 
 ```bash
-sudo umount /dev/disk2s1
+diskutil unmount /dev/disk2
 unzip -p 2020-02-13-raspbian-buster-lite.zip | sudo dd of=/dev/disk2 bs=4m
+diskutil mount /dev/disk2
+touch /Volumes/boot/ssh # to enable ssh
 ```
 
 2. Run the initialize ansible playbook
 
 ```
-ansible-playbook initialize.yaml -i hosts
+ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook initialize.yaml -i inventories/thspinto
+```
+
+3. Run the setup playbook
+
+```
+ansible-playbook setup.yaml -i inventories/thspinto
 ```
 
 ## References

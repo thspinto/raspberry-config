@@ -5,21 +5,17 @@
   become_method: sudo
   vars:
     hostname: raspberrypi
-    users:
-    -  "thspinto"
 
   tasks:
   - name: "Create user accounts"
     user:
-      name: "{{ item }}"
-      groups: "pi,adm,dialout,cdrom,sudo,audio,video,plugdev,games,users,input,netdev,gpio,i2c,spi"
-    with_items: "{{ users }}"
+      name: "{{ user }}"
+      groups: "adm,dialout,cdrom,sudo,audio,video,plugdev,games,users,input,netdev,gpio,i2c,spi"
 
   - name: "Add authorized keys"
     authorized_key:
-      user: "{{ item }}"
-      key: "https://github.com/{{ item }}.keys"
-    with_items: "{{ users }}"
+      user: "{{ user }}"
+      key: "https://github.com/{{ user }}.keys"
 
   - name: "Allow sudo group without a password"
     lineinfile:
@@ -49,6 +45,15 @@
       line: "PasswordAuthentication no"
       state: present
 
+
+# Mount extra volume
+  - name: Mount
+    mount:
+      path: /mnt/volume1
+      src: /dev/sda
+      opts: bind
+      fstype: ext4
+      state: present
 
   - name: "Reboot"
     reboot:

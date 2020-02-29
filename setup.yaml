@@ -3,10 +3,15 @@
 
 - hosts: "rbp"
   become: yes
-  vars:
-    admin_email: thspinto@protonmail.com
 
   tasks:
+  - name: "Mount extra storage"
+    mount:
+      path: /mnt/storage
+      src: /dev/sda
+      fstype: ext4
+      state: mounted
+
   - name: "Drop the pi user"
     user:
       name: pi
@@ -25,85 +30,15 @@
       - apt:
           autoremove: yes
 
-  - name: "Ensure fail2ban is running and enabled on boot"
+  - import_tasks: tasks/fail2ban.yaml
     tags: fail2ban
-    block:
-    - apt:
-        pkg: fail2ban
-        state: present
-    - copy:
-        src: templates/jail.local.j2
-        dest: /etc/fail2ban/jail.local
-        owner: root
-        group: root
-        mode: 0644
-    - service:
-        name: fail2ban
-        state: started
-        enabled: yes
 
-  - name: "Install and configure unattended"
-    block:
-    - apt:
-        pkg: "{{ item }}"
-        state: present
-      with_items:
-        - unattended-upgrades
-        - apt-listchanges
-        - mailutils
+  - import_tasks: tasks/unattended.yamlmounted
 
-    - template:
-        src: "./templates/{{ item }}.j2"
-        dest: "/etc/apt/apt.conf.d/{{ item }}"
-        owner: root
-        group: root
-        mode: 0644
-      with_items:
-        - 20auto-upgrades
-        - 50unattended-upgrades
+    tags: unattended
 
-  - name: "Updated unattended-upgrades config to reboot if needed,
-          auto-fix, reboot time, email, etc"
-    lineinfile:
-      dest: "/etc/apt/apt.conf.d/50unattended-upgrades"
-      regexp: "{{ item.regexp }}"
-      line: "{{ item.line }}"
-      state: present
-    with_items:
-      - regexp: "(\/\/)? ?Unattended-Upgrade::AutoFixInterruptedDpkg \""
-        line: Unattended-Upgrade::AutoFixInterruptedDpkg "true";
-      - regexp: "(\/\/)? ?Unattended-Upgrade::MinimalSteps \""
-        line: Unattended-Upgrade::MinimalSteps "true";
-      - regexp: "(\/\/)? ?Unattended-Upgrade::Automatic-Reboot \""
-        line: Unattended-Upgrade::Automatic-Reboot "true";
-      - regexp: "(\/\/)? ?Unattended-Upgrade::Automatic-Reboot-Time \""
-        line: Unattended-Upgrade::Automatic-Reboot-Time "02:00";
-      - regexp: "(\/\/)? ?Unattended-Upgrade::Mail \""
-        line: Unattended-Upgrade::Mail "{{ admin_email }}";
-      - regexp: "(\/\/)? ?Unattended-Upgrade::MailOnlyOnError \""
-        line: Unattended-Upgrade::MailOnlyOnError "false";
-      - regexp: "(\/\/)? ?Unattended-Upgrade::Remove-Unused-Dependencies \""
-        line: Unattended-Upgrade::Remove-Unused-Dependencies "true";
-
-  - name: "Configure ufw (firewall) rules"
-    become: yes
+  - import_tasks: tasks/firewall.yaml
     tags: firewall
-    block:
-      - apt:
-          name: ufw
-          state: present
-      - ufw:
-          rule: allow
-          port : "{{ item }}"
-        with_items:
-          - "22"     # ssh
-          - "53"     # dns      (dnsmasq, see below)
-          - "80"     # http     (mostly to generate/renew certs)
-          - "443"    # https    (mostly to generate/renew certs)
-          - "1883"   # mqtt
-          - "8883"   # mqtt ssl (not sure whether mqtt is using ssl, let's open both)
-          - "8123"   # Home Assistant
-      - ufw:
-          state: enabled
-          policy: reject
-          direction: incoming
+
+  - import_tasks: tasks/docker.yaml
+    tags: docker

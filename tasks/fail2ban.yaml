@@ -1,0 +1,16 @@
+---
+- name: "Ensure fail2ban is running and enabled on boot"
+  block:
+  - apt:
+      pkg: fail2ban
+      state: present
+  - template:
+      src: failt2ban/jail.local.j2
+      dest: /etc/fail2ban/jail.local
+      owner: root
+      group: root
+      mode: 0644
+  - service:
+      name: fail2ban
+      state: started
+      enabled: yes
