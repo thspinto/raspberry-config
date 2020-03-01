@@ -25,7 +25,7 @@ ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook initialize.yaml -i inventories/
 
 ```bash
 ansible-galaxy install -r requirements.yml
-ansible-playbook setup.yaml -i inventories/thspinto
+ansible-playbook --vault-password-file /path/to/my/vault-password-file setup.yaml -i inventories/thspinto
 ```
 
 ## References

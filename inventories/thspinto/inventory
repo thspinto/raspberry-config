@@ -2,4 +2,4 @@
 raspberrypi_initialize ansible_ssh_host=raspberrypi.lan ansible_connection=ssh ansible_ssh_user=pi ansible_ssh_pass=raspberry
 
 [rbp]
-raspberrypi ansible_ssh_host=raspberrypi.lan ansible_ssh_user=thspinto
+raspberrypi ansible_ssh_host=raspberrypi.lan

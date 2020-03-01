@@ -1,0 +1,7 @@
+# This playbook configures the services in rpb
+---
+- hosts: "rbp"
+
+  tasks:
+  - import_tasks: tasks/cloudflare_ddns.yaml
+    tags: ddns

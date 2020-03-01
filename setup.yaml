@@ -53,6 +53,3 @@
 
   - import_tasks: tasks/docker.yaml
     tags: docker
-
-  - import_tasks: tasks/cloudflare_ddns.yaml
-    tags: ddns

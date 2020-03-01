@@ -18,3 +18,15 @@ docker_pip_executable: pip3
 
 docker_users:
   - "{{ user }}"
+
+###
+### Ansible
+###
+ansible_user: "{{ user }}"
+
+###
+### Traefik
+###
+traefik_docker_image: traefik:v1.7
+traefik_data_directory: "{{ docker_home }}/traefik"
+traefik_debug: "false"

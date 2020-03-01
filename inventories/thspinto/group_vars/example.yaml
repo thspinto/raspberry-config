@@ -1,0 +1,6 @@
+---
+email: email@example.com
+user: github_user
+domain: yourdomain.com
+
+cloudflare_api_key: api_key
