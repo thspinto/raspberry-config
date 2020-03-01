@@ -11,6 +11,9 @@
       state: present
 
   roles:
+  - role: mikolak-net.raspi_config
+    raspi_config_hostname: raspberrypi
+
   - role: geerlingguy.docker_arm
     tags:
       - docker
@@ -29,17 +32,9 @@
       state: absent
       remove: yes
 
-  - name: "Timezone"
-    timezone:
-      name: "America/Sao_Paulo"
-
-  - name: "Update and remove unneeded packages"
-    block:
-      - apt:
-          update_cache: yes
-          upgrade: dist
-      - apt:
-          autoremove: yes
+  - name: "Remove unneeded packages"
+    apt:
+      autoremove: yes
 
   - import_tasks: tasks/fail2ban.yaml
     tags: fail2ban

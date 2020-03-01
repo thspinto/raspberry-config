@@ -1,3 +1,5 @@
 ---
 - name: geerlingguy.docker_arm
   version: 2.1.0
+- name: mikolak-net.raspi_config
+  version: 1.2.1
