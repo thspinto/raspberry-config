@@ -4,3 +4,8 @@ user: github_user
 domain: yourdomain.com
 
 cloudflare_api_key: api_key
+
+forward_auth_issuer_url: auth.domain.com
+forward_auth_client_id: id
+forward_auth_client_secret: secret
+forward_auth_secret: cookie secret

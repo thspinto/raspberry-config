@@ -1,0 +1,23 @@
+---
+- name: "Forward Auth Docker Container"
+  docker_container:
+    name: forward_auth
+    image: "{{ forward_auth_docker_image }}"
+    pull: true
+    exposed_ports:
+      - 4181
+    command:
+      - "--default-provider=oidc"
+      - "--providers.oidc.issuer-url={{ forward_auth_issuer_url }}"
+      - "--providers.oidc.client-id={{ forward_auth_client_id }}"
+      - "--providers.oidc.client-secret={{ forward_auth_client_secret }}"
+      - "--cookie-domain={{ domain }}"
+      - "--secret={{ forward_auth_secret }}"
+      - "--auth-host=auth.{{ domain }}"
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.auth.rule: Host(`auth.{{ domain }}`)
+      traefik.http.routers.auth.service: auth
+      traefik.http.routers.auth.tls: "true"
+      traefik.http.routers.auth.tls.certresolver: ssl
+    restart_policy: unless-stopped

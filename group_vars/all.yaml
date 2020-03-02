@@ -27,6 +27,14 @@ ansible_user: "{{ user }}"
 ###
 ### Traefik
 ###
-traefik_docker_image: traefik:v1.7
+traefik_docker_image: traefik:v2.1
 traefik_data_directory: "{{ docker_home }}/traefik"
 traefik_debug: "false"
+traefik_port_http: "80"
+traefik_port_https: "443"
+traefik_port_ui: "8083"
+
+###
+### Forward Auth
+###
+forward_auth_docker_image: thiagoquintoandar/traefik-forward-auth:2.1-arm

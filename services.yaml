@@ -1,7 +1,14 @@
 # This playbook configures the services in rpb
 ---
 - hosts: "rbp"
+  become: yes
 
   tasks:
   - import_tasks: tasks/cloudflare_ddns.yaml
     tags: ddns
+
+  - import_tasks: tasks/traefik.yaml
+    tags: traefik
+
+  - import_tasks: tasks/forward_auth.yaml
+    tags: forward_auth

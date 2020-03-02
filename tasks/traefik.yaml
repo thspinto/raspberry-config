@@ -1,0 +1,27 @@
+---
+- name: "Traefik Docker Container"
+  docker_container:
+    name: traefik
+    image: "{{ traefik_docker_image }}"
+    pull: true
+    published_ports:
+      - 80:80
+      - 443:443
+    command:
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedByDefault=false"
+      - "--global.sendAnonymousUsage=false"
+      - "--certificatesResolvers.ssl.acme.email={{ email }}"
+      - "--certificatesResolvers.ssl.acme.storage=acme.json"
+      - "--certificatesResolvers.ssl.acme.dnsChallenge=true"
+      - "--certificatesResolvers.ssl.acme.dnsChallenge.provider=cloudflare"
+      - "--certificatesResolvers.ssl.acme.dnsChallenge.resolvers=1.1.1.1:53,8.8.8.8:53"
+      - "--log.level=DEBUG"
+    env:
+      CF_DNS_API_TOKEN: "{{ cloudflare_api_key }}"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "{{ traefik_data_directory }}/acme:/etc/traefik/acme"
+    restart_policy: unless-stopped
