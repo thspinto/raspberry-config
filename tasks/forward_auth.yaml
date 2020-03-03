@@ -17,6 +17,9 @@
       - "--whitelist={{ email }}"
     labels:
       traefik.enable: "true"
+      traefik.http.middlewares.auth.forwardauth.address: https://auth.{{ domain }}
+      traefik.http.middlewares.auth.forwardauth.authResponseHeaders: X-Auth-User
+      traefik.http.routers.auth.middlewares: auth
       traefik.http.routers.auth.rule: Host(`auth.{{ domain }}`)
       traefik.http.routers.auth.entryPoints: websecure
       traefik.http.routers.auth.tls:
