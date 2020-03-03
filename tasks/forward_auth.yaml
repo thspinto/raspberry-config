@@ -14,10 +14,11 @@
       - "--cookie-domain={{ domain }}"
       - "--secret={{ forward_auth_secret }}"
       - "--auth-host=auth.{{ domain }}"
+      - "--whitelist={{ email }}"
     labels:
       traefik.enable: "true"
       traefik.http.routers.auth.rule: Host(`auth.{{ domain }}`)
-      traefik.http.routers.auth.service: auth
-      traefik.http.routers.auth.tls: "true"
+      traefik.http.routers.auth.entryPoints: websecure
+      traefik.http.routers.auth.tls:
       traefik.http.routers.auth.tls.certresolver: ssl
     restart_policy: unless-stopped
