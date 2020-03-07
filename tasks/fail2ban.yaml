@@ -5,7 +5,7 @@
       pkg: fail2ban
       state: present
   - template:
-      src: failt2ban/jail.local.j2
+      src: failt2ban/jail.conf
       dest: /etc/fail2ban/jail.local
       owner: root
       group: root

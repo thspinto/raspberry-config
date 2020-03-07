@@ -39,8 +39,3 @@ ansible-playbook --vault-password-file /path/to/my/vault-password-file setup.yam
 * [Traefik](https://docs.traefik.io/) as reverse proxy
 * [Forward Auth](https://github.com/thomseddon/traefik-forward-auth) to enable OIDC authentication through traefik
 * [Auth0](https://auth0.com) as authentication provider
-
-## TODO
-
-* https redirect
-* https certificates
