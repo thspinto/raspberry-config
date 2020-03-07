@@ -5,7 +5,7 @@
     image: oznu/cloudflare-ddns:armhf
     pull: true
     env:
-      ZONE: "{{ domain }}"
+      ZONE: "rbp.{{ domain }}"
       API_KEY: "{{ cloudflare_api_key }}"
       PROXY: "false"
     restart_policy: unless-stopped
