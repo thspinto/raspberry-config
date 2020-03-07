@@ -1,14 +1,19 @@
 # This playbook configures the services in rpb
 ---
 - hosts: "rbp"
-  become: yes
-
   tasks:
-  - import_tasks: tasks/cloudflare_ddns.yaml
-    tags: ddns
+  - name: "Create directory"
+    file:
+      path: "~/services"
+      state: "directory"
+      mode: 0777
 
-  - import_tasks: tasks/traefik.yaml
-    tags: traefik
+  - name: "Copy docker-compose file"
+    template:
+      src: "services/docker-compose.yaml"
+      dest: "~/services/docker-compose.yaml"
+      mode: 0777
 
-  - import_tasks: tasks/forward_auth.yaml
-    tags: forward_auth
+  - name: "Start services"
+    docker_compose:
+      project_src: "~/services"
