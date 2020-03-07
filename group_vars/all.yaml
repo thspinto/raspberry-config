@@ -19,6 +19,8 @@ docker_pip_executable: pip3
 docker_users:
   - "{{ user }}"
 
+docker_install_compose: true
+
 ###
 ### Ansible
 ###
