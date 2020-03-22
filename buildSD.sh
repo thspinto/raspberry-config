@@ -32,8 +32,12 @@ main() {
 
   # Only supporting OSX for now
   sudo diskutil unmountDisk $DISK_PATH
+
+  echo "Installing OS: this takes a while..."
   unzip -p $OS_ZIP | sudo dd of=$DISK_PATH bs=4m
-  sudo diskutil mount $DISK_PATH
+
+  echo "Enabling ssh"
+  sudo diskutil mountDisk $DISK_PATH
   touch /Volumes/boot/ssh
 }
 
