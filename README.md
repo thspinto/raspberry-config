@@ -18,7 +18,7 @@ touch /Volumes/boot/ssh # to enable ssh
 2. Run the initialize ansible playbook
 
 ```bash
-ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook initialize.yaml -i inventories/thspinto
+ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook --vault-password-file /path/to/my/vault-password-file initialize.yaml -i inventories/thspinto
 ```
 
 3. Run the setup playbook

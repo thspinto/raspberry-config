@@ -25,11 +25,6 @@
       line: "%sudo ALL=(ALL) NOPASSWD: ALL"
       validate: 'visudo -cf %s'
 
-# Network
-  - name: "Configure hostname"
-    hostname:
-      name: "{{ hostname }}"
-
 # Security
   - name: "Disable root login over SSH"
     lineinfile:
@@ -44,16 +39,3 @@
       regexp: "^PasswordAuthentication"
       line: "PasswordAuthentication no"
       state: present
-
-
-# Mount extra volume
-  - name: Mount
-    mount:
-      path: /mnt/volume1
-      src: /dev/sda
-      opts: bind
-      fstype: ext4
-      state: present
-
-  - name: "Reboot"
-    reboot:
