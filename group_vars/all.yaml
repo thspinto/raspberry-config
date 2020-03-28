@@ -29,7 +29,7 @@ ansible_user: "{{ user }}"
 ###
 ### Traefik
 ###
-traefik_docker_image: traefik:v2.1
+traefik_docker_image: traefik:v2.2
 traefik_data_directory: "{{ docker_home }}/traefik"
 traefik_debug: "false"
 traefik_port_http: "80"

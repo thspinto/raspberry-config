@@ -14,22 +14,21 @@ services:
       - "--providers.docker.exposedByDefault=false"
       - "--global.sendAnonymousUsage=false"
       - "--certificatesResolvers.ssl.acme.email={{ email }}"
-      - "--certificatesResolvers.ssl.acme.storage=acme.json"
+      - "--certificatesResolvers.ssl.acme.storage=/acme/acme.json"
       - "--certificatesResolvers.ssl.acme.dnsChallenge=true"
       - "--certificatesResolvers.ssl.acme.dnsChallenge.provider=cloudflare"
       - "--certificatesResolvers.ssl.acme.dnsChallenge.resolvers=1.1.1.1:53,8.8.8.8:53"
-      - "--certificatesResolvers.ssl.acme.dnsChallenge.delayBeforeCheck=600"
+      - "--certificatesResolvers.ssl.acme.dnsChallenge.delayBeforeCheck=60"
       - "--log.level=DEBUG"
       - "--api.dashboard=true"
     environment:
       CF_DNS_API_TOKEN: "{{ cloudflare_api_key }}"
     labels:
       traefik.enable: "true"
-      traefik.http.routers.http_catchall.rule: HostRegexp(`{any:.+}`)
-      traefik.http.routers.http_catchall.entrypoints: web
-      traefik.http.routers.http_catchall.middlewares: https_redirect
-      traefik.http.middlewares.https_redirect.redirectscheme.scheme: https
-      traefik.http.middlewares.https_redirect.redirectscheme.permanent: true
+      traefik.http.routers.http-catchall.entrypoints: web
+      traefik.http.routers.http-catchall.rule: hostregexp(`{host:.+}`)
+      traefik.http.routers.http-catchall.middlewares: redirect-to-https
+      traefik.http.middlewares.redirect-to-https.redirectscheme.scheme: https
       traefik.http.routers.api.middlewares: auth
       traefik.http.routers.api.rule: Host(`traefik.{{ domain }}`)
       traefik.http.routers.api.service: api@internal
@@ -37,7 +36,7 @@ services:
       traefik.http.routers.api.tls.certresolver: ssl
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
-      - "{{ traefik_data_directory }}/acme.json:/acme.json"
+      - "{{ traefik_data_directory }}/acme:/acme:rw"
     restart: unless-stopped
 
   forward_auth:
