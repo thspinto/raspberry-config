@@ -68,7 +68,7 @@ services:
   cloudflare-ddns:
     image: oznu/cloudflare-ddns:armhf
     environment:
-      ZONE: "{{ domain }}"
+      ZONE: "rbp.{{ domain }}"
       API_KEY: "{{ cloudflare_api_key }}"
       PROXY: "false"
     restart: unless-stopped
