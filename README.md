@@ -28,6 +28,11 @@ ansible-galaxy install -r requirements.yml
 ansible-playbook --vault-password-file /path/to/my/vault-password-file setup.yaml -i inventories/thspinto
 ```
 
+## Running from qemu
+
+I found it easier to iterate configuration testing without leaving my terminal. You can boot the RaspberryPi SD card using qemu with the `qemu.sh` script
+
+
 ## References
 
 [Chester's ansible configs](https://github.com/chesterbr/chester-ansible-configs)

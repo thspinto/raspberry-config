@@ -6,6 +6,10 @@
   vars:
     hostname: raspberrypi
 
+  roles:
+  - role: mikolak-net.raspi_config
+    raspi_config_hostname: raspberrypi
+
   tasks:
   - name: "Create user accounts"
     user:
